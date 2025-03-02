@@ -63,8 +63,7 @@ pub fn build(b: *std.Build) !void {
     // Enable our `./configure` options. For bool-type fields we translate
     // it to the `LIBXML_{field}_ENABLED` C define where field is uppercased.
     inline for (std.meta.fields(Options)) |field| {
-        const opt = b.option(bool, field.name, "Configure flag") orelse
-            @as(*const bool, @ptrCast(field.default_value_ptr.?)).*;
+        const opt = b.option(bool, field.name, "Configure flag") orelse field.defaultValue().?;
         if (opt) {
             var nameBuf: [32]u8 = undefined;
             const name = std.ascii.upperString(&nameBuf, field.name);
